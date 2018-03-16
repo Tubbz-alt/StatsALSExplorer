@@ -1,16 +1,15 @@
-'''
-Class for comparing corresponding strips. For example one can compare strips from two periods:
-one before correction and after correction. 
-For this purpose strips in strips definition file should have same name with additional ending (e.g. '_corrected').
-Ending for corrected strips is set in StripsFabric object.
-'''
+
 from opals import Import, Grid, Diff, Histo, Types, ZColor
 from StripsFabric import StripsFabric
 from StatsReportGenerator import StatsReportGenerator
 import os
 
-class CorrespondingStripsComarer:
+class CorrespondingStripsComparer:
     '''
+    Class for comparing corresponding strips. For example one can compare strips from two periods:
+    one before correction and after correction. 
+    For this purpose strips in strips definition file should have same name with additional ending (e.g. '_corrected').
+    Ending for corrected strips is set in StripsFabric object.
     Parameters:
     -----------
     StripsFabric: StripsFabric object
@@ -24,7 +23,7 @@ class CorrespondingStripsComarer:
         if not os.path.exists(self.result_folder):
                 os.makedirs(self.result_folder)
 
-        self.report = StatsReportGenerator(os.path.join(self.result_folder, 'overlapping_strips_stats.txt'))
+        self.report = StatsReportGenerator(os.path.join(self.result_folder, 'corresponding_strips_stats.txt'))
     '''
     Run strips comparation.
     '''
@@ -42,7 +41,7 @@ class CorrespondingStripsComarer:
             i += 1
 
             diff_name = os.path.splitext(os.path.basename(base_strip))[0] + '-' + os.path.splitext(os.path.basename(corrected_strip))[0]
-            diff_rasters_folder = os.path.join(self.result_folder, 'diff_rasters_overlap')
+            diff_rasters_folder = os.path.join(self.result_folder, 'diff_corresponding_rasters')
             if not os.path.exists(diff_rasters_folder):
                 os.makedirs(diff_rasters_folder)
             diff_raster_file = os.path.join(diff_rasters_folder, diff_name + '.tif')

@@ -10,7 +10,7 @@ class StatsReportGenerator:
         self.std = float(0)
         self.rms = float(0)
         self.report_file = open(report_file, 'a')
-        self.report_file.write('________ Stats from overlapping strips generated at: ' + str(datetime.datetime.now()) + ' ________\n')
+        self.report_file.write('\n' + '_'*10 + 'Stats from comparing strips generated at: ' + str(datetime.datetime.now()) + '_'*10 + '\n')
         self.i = 0
 
     def _xstr(self, s):
@@ -50,4 +50,5 @@ class StatsReportGenerator:
         std_mean = self.std / self.i
         rms_mean = self.rms / self.i
         self.report_file.write('Mean values: \t Mean: ' + self._xstr(mean_mean) + '\t Std: ' + self._xstr(std_mean) + '\t RMS: ' + self._xstr(rms_mean) + '\n')
+        self.report_file.write('_'*50)
         self.report_file.close()
