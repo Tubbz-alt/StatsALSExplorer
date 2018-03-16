@@ -25,7 +25,18 @@ class StatsReportGenerator:
         else:
             return float(f)
 
-    def addValuesAndWrite(self, compared_strips_name, min_value = None, max_value = None, mean = None, std = None, rms = None):
+    def deduceFromHistogram(self, histogram, diff_name):
+        histogram_param = histogram[0]
+        min_val = float("{0:.3f}".format(histogram_param.getMin()))
+        max_val = float("{0:.3f}".format(histogram_param.getMax()))
+        mean = float("{0:.3f}".format(histogram_param.getMean()))
+        std = float("{0:.3f}".format(histogram_param.getStd()))
+        rms = float("{0:.3f}".format(histogram_param.getRms()))
+
+        self._addValuesAndWrite(diff_name, min_val, max_val, mean, std, rms)
+
+
+    def _addValuesAndWrite(self, compared_strips_name, min_value = None, max_value = None, mean = None, std = None, rms = None):
         self.min_value += self._xfloat(min_value)
         self.max_value += self._xfloat(max_value)
         self.mean += self._xfloat(mean)
@@ -38,5 +49,5 @@ class StatsReportGenerator:
         mean_mean = self.mean / self.i
         std_mean = self.std / self.i
         rms_mean = self.rms / self.i
-        self.report_file.write('Mean values: \t Mean: ' + _xstr(mean_mean) + '\t Std: ' + _xstr(std_mean) + '\t RMS: ' + _xstr(rms_mean) + '\n')
+        self.report_file.write('Mean values: \t Mean: ' + self._xstr(mean_mean) + '\t Std: ' + self._xstr(std_mean) + '\t RMS: ' + self._xstr(rms_mean) + '\n')
         self.report_file.close()

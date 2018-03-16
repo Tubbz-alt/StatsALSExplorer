@@ -20,12 +20,12 @@ class OverlappingStripsComparer:
         if not os.path.exists(self.result_folder):
                 os.makedirs(self.result_folder)
 
-        self.report = StatsReportGenerator(os.path.join(self.result_folder, 'overlapping_stats.txt'))
+        self.report = StatsReportGenerator(os.path.join(self.result_folder, 'overlapping_strips_stats.txt'))
     '''
     Create overlap file for given strips. Useful for further comparisons.
     '''
     def _createOverlap(self):
-        strips_list = self.stripsFabric.getStripsPlusCorrectedFromFile()
+        strips_list = self.stripsFabric.getStripsFromFile()
         bounds_list = list()
         for base_strip in strips_list:
 
@@ -65,7 +65,7 @@ class OverlappingStripsComparer:
             strip2 = splitted_line[1].strip().split('_bounds')[0] + '_z.tif'
 
             diff_name = os.path.splitext(os.path.basename(strip1))[0] + '-' + os.path.splitext(os.path.basename(strip2))[0]
-            diff_rasters_folder = os.path.join(self.result_folder, 'diff_rasters')
+            diff_rasters_folder = os.path.join(self.result_folder, 'diff_rasters_overlap')
             if not os.path.exists(diff_rasters_folder):
                 os.makedirs(diff_rasters_folder)
             diff_raster_file = os.path.join(diff_rasters_folder, diff_name + '.tif')
@@ -89,14 +89,7 @@ class OverlappingStripsComparer:
             hist.sampleRange = [-0.5, 0.5]
             hist.run()
 
-            histogram_param = hist.histogram[0]
-            min_val = float("{0:.3f}".format(histogram_param.getMin()))
-            max_val = float("{0:.3f}".format(histogram_param.getMax()))
-            mean = float("{0:.3f}".format(histogram_param.getMean()))
-            std = float("{0:.3f}".format(histogram_param.getStd()))
-            rms = float("{0:.3f}".format(histogram_param.getRms()))
-
-            self.report.addValuesAndWrite(diff_name, min_val, max_val, mean, std, rms)
+            self.report.deduceFromHistogram(hist.histogram, diff_name)
             
         self.report.summarize()
 
